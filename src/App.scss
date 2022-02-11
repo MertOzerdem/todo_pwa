@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+}
+
+
+$bg-colors: (
+    "1": #DAFCFA,
+    "2": #B1E5E2,
+    "3": #42E5DC,
+    "4": #1FBCB3,
+    "5": #0AA79D
+);
+
+@for $i from 1 through 5 {
+    .card-#{$i} {
+        background-color: map-get($bg-colors, #{$i});
+    }
+}

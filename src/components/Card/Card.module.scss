@@ -1,0 +1,73 @@
+$text-color: #fff;
+$text-color-dark: #000;
+
+$small: 5px;
+$medium: 10px;
+$large: 15px;
+
+$weight: 400;
+
+$circle-lenght: 24px;
+$circle-radius: 10;
+
+.card {
+    width: 70%;
+    min-height: 30px;
+    border-radius: 15px;
+    margin: $small;
+    font-weight: $weight;
+    color: $text-color-dark;
+    display: flex;
+    align-items: center;
+}
+
+.confirmBox {
+    margin: $small $small;
+    width: $circle-lenght;
+    height: $circle-lenght;
+    min-width: $circle-lenght;
+    min-height: $circle-lenght;
+
+    transition: transform 250ms;
+    transform-origin: center;
+    will-change: transform;
+
+    &:hover {
+        transition: transform 500ms;
+        transform: scale(1.2);
+    }
+}
+
+.circle {
+    stroke-width: 1px;
+}
+
+.cardContext {
+    overflow: hidden;
+    text-align: start;
+    // overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    max-height: 20px;
+
+    &:hover {
+        max-height: fit-content;
+        overflow-wrap: break-word;
+    }
+
+    &:active {
+        max-height: fit-content;
+        overflow-wrap: break-word;
+    }
+}
+
+.input {
+    border: none;
+    background: inherit;
+    outline: none;
+    width: 85%;
+
+    overflow: hidden;
+    text-align: start;
+    // overflow-wrap: break-word;
+    text-overflow: ellipsis;
+}
