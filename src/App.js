@@ -13,7 +13,8 @@ function App() {
     })
   }
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault()
     setCards((prev) => {
       let lastItem = prev.slice(-1).pop()
       let tempCards = [...prev] // Create and return new array to make pure function. Rerender cause problems when prev changed on its own
@@ -31,10 +32,6 @@ function App() {
     })
   }
 
-  useEffect(() => {
-    console.log(cards)
-  }, [cards])
-
   const getCards = () => {
     let CardComponents = [];
 
@@ -47,7 +44,7 @@ function App() {
 
   return (
     <>
-      <button onClick={handleClick}>Add Task</button>
+      <button className="addTask" onClick={handleClick}>Add Task</button>
       <motion.div
         layout 
         className="App"
