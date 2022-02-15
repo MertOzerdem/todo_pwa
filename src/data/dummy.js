@@ -1,12 +1,12 @@
 export const DUMMY_CARDS = [
     {
         id: 1,
-        text: '',
+        text: 'first text',
         isFinished: false
     },
     {
         id: 2,
-        text: '',
+        text: 'second text',
         isFinished: false
     },
     {

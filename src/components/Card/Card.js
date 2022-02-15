@@ -8,12 +8,18 @@ const COLORS = {
 }
 
 const Card = (props) => {
-    const {className, children, finishTask, id, ...rest} = props;
+    const {className, children, finishCard, changeCard, id, variants, ...rest} = props;
+    const [text, setText] = useState(props.text);
     const [checked, setChecked] = useState(false);
 
     const handleClick = () => {
         setChecked((prev) => !prev);
-        finishTask(id)
+        finishCard(id)
+    }
+
+    const inputChangeHandler = (event) => {
+        changeCard(id, event.target.value)
+        setText(event.target.value)
     }
 
     return (
@@ -21,19 +27,17 @@ const Card = (props) => {
             layout 
             className={`${className ? className : ''} ${styles.card}`} 
             {...rest}
-            initial={false}
+            // initial={false}
             drag="x"
             dragConstraints={{ left: 0, right: 100 }}
-            animate={{opacity: 1}}
-            initial={{opacity: 0}}
+            variants={variants}
             exit={{opacity:0}}
-            transition={{ duration: 0.5 }}
             >
             <svg className={styles.confirmBox} onClick={handleClick} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50%" cy="50%" r="7.5" className={styles.circle} fill={checked ? COLORS.checked : COLORS.unchecked} stroke="#000"/>
                 <path d="M4 8L7 10.5L12 5" stroke={checked ? '#000' : 'none'} strokeLinecap="round"/>
             </svg>
-            <input className={styles.input}/>
+            <input value={text} onChange={inputChangeHandler} className={styles.input}/>
             <div className={styles.cardContext}>
                 {children}
             </div>
