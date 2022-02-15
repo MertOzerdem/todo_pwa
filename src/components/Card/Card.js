@@ -1,6 +1,6 @@
 import styles from './Card.module.scss'
-import { useState, useEffect } from 'react';
-import useSaveLocal from '../custom-hooks/useSaveLocal'
+import { useState } from 'react'
+import useSaveLocal from '../../custom-hooks/useSaveLocal'
 import { Reorder } from 'framer-motion'
 
 const COLORS = {
@@ -15,7 +15,7 @@ const Card = (props) => {
     // const y = useMotionValue(0);
 
     const handleClick = () => {
-        setChecked((prev) => !prev);
+        setChecked((prev) => !prev)
         finishCard(id)
     }
 
@@ -23,15 +23,7 @@ const Card = (props) => {
         setText(event.target.value)
     }
 
-    useEffect(() => {
-        let saveChangesTimer = setTimeout(() => {
-            changeCard(id, text);
-        }, 2000);
-        
-        return () => {
-            clearTimeout(saveChangesTimer)
-        }
-    }, [text, changeCard, id])
+    useSaveLocal(changeCard, [id, text], 1000)
 
     return (
         <Reorder.Item
@@ -57,6 +49,3 @@ const Card = (props) => {
 }
 
 export default Card;
-
-
-
