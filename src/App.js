@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import * as _ from 'lodash'
 import './App.scss';
 // import {DUMMY_CARDS as dummy_cards} from './data/dummy'
 import { getItemFromLocal, setItemToLocal } from './utils/localStorage-helpers'
-import { motion, AnimatePresence } from 'framer-motion'
+import useSaveLocal from './custom-hooks/useSaveLocal'
+import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import Card from './components/Card/Card'
 
 const storageName = 'userCards'
@@ -34,7 +36,6 @@ const childrenVariants = {
   }
 };
 
-
 function App() {
   const [isOpen, setOpen] = useState(false)
   const [cards, setCards] = useState(userCards ? userCards : [])
@@ -47,9 +48,7 @@ function App() {
     }
   }, [])
 
-  useEffect(() => {
-    setItemToLocal(storageName, cards);
-  }, [cards])
+  useSaveLocal(setItemToLocal, [storageName, cards])
 
   const finishCard = (id) => {
     setCards((prev) => {
@@ -57,29 +56,31 @@ function App() {
     })
   }
 
-  const changeCard = (id, text) => {
+  const changeCard = useCallback((id, text) => {
     setCards(prev => {
       let tempCards = [...prev]
+      let index = _.findIndex(tempCards, {id: id});
 
-      // sort and change with lodash
-      tempCards.find(o => o.id === id);
-      tempCards[id].text = text
+      tempCards.splice(index, 1, {
+        ...tempCards[index],
+        text: text
+      })
 
       return tempCards
     })
-  }
+  },[])
 
-  const handleClick = (e) => {
+  const handleAddClick = (e) => {
     e.preventDefault()
 
     setCards((prev) => {
-      let lastItem = prev.slice(-1).pop()
       let tempCards = [...prev] // Create and return new array to make pure function. Rerender cause problems when prev changed on its own
-      
+      let lastItem = _.maxBy(tempCards, (card) => card.id)
+
       if(tempCards.length) {
         tempCards.push({
+          id: lastItem.id  + 1,
           text: '',
-          id: lastItem.id + 1,
           isFinished: false
         })
       } else {
@@ -102,7 +103,7 @@ function App() {
     let CardComponents = [];
 
     cards.forEach(card => {
-      CardComponents.push(<Card variants={childrenVariants} key={card.id} id={card.id} finishCard={finishCard} changeCard={changeCard} text={card.text} className={`card-${(card.id % 5) + 1}`}></Card>)
+      CardComponents.push(<Card key={card.id} value={card} variants={childrenVariants} id={card.id} finishCard={finishCard} changeCard={changeCard} text={card.text} className={`card-${(card.id % 5) + 1}`}></Card>)
     });
 
     return CardComponents;
@@ -110,7 +111,7 @@ function App() {
 
   return (
     <>
-      <button className="Button" onClick={handleClick}>Add Task</button>
+      <button className="Button" onClick={handleAddClick}>Add Task</button>
       <button className="Button" onClick={handleToggle}>Toggle</button>
       <motion.div
         layout
@@ -118,14 +119,15 @@ function App() {
         variants={variants}
         initial="closed"
         animate={isOpen ? "open" : "closed"}
-      >
-        <AnimatePresence>
-          {getCards().map((card)=>{
-            return card
-          })}
-        </AnimatePresence>
+        >
+        <Reorder.Group axis="y" values={cards} onReorder={setCards}>
+          <AnimatePresence>
+            {getCards().map((card)=>{
+              return card
+            })}
+          </AnimatePresence>
+        </Reorder.Group>
       </motion.div>
-      
     </>
   );
 }

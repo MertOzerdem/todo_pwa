@@ -11,6 +11,7 @@ $circle-lenght: 24px;
 $circle-radius: 10;
 
 .card {
+    position: relative;
     width: 70%;
     min-height: 30px;
     border-radius: 15px;
@@ -64,7 +65,7 @@ $circle-radius: 10;
     border: none;
     background: inherit;
     outline: none;
-    width: 85%;
+    width: 75%;
 
     overflow: hidden;
     text-align: start;
