@@ -1,6 +1,8 @@
 import { useRef, useEffect } from 'react';
-const useSaveLocal = (callback, params, timeout = 1000) => {
+
+const useTimeoutEffect = (callback, timeout = 1000) => {
     const isInitialMount = useRef(true);
+
     useEffect(() => {
         let saveChangesTimer;
     
@@ -8,16 +10,15 @@ const useSaveLocal = (callback, params, timeout = 1000) => {
             isInitialMount.current = false;
         } else {
             saveChangesTimer = setTimeout(() => {
-                console.log('save changes')
-                callback(...params)
+                // console.log('save changes alt')
+                callback()
             }, timeout);
         }
     
         return () => {
             clearTimeout(saveChangesTimer)
         }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [callback, ...params, timeout]);
+    }, [callback, timeout]);
 }
 
-export default useSaveLocal;
+export default useTimeoutEffect;

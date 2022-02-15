@@ -3,7 +3,8 @@ import * as _ from 'lodash'
 import './App.scss';
 // import {DUMMY_CARDS as dummy_cards} from './data/dummy'
 import { getItemFromLocal, setItemToLocal } from './utils/localStorage-helpers'
-import useSaveLocal from './custom-hooks/useSaveLocal'
+// import useSaveLocal from './custom-hooks/useSaveLocal'
+import useTimeoutEffect from './custom-hooks/useTimeoutEffect'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import Card from './components/Card/Card'
 
@@ -48,7 +49,16 @@ function App() {
     }
   }, [])
 
-  useSaveLocal(setItemToLocal, [storageName, cards])
+  // useSaveLocal(setItemToLocal, [storageName, cards])
+
+  const memoizedCallback = useCallback(
+      () => {
+        setItemToLocal(storageName, cards)
+        console.log('app')
+      },
+      [cards]
+  );
+  useTimeoutEffect(memoizedCallback)
 
   const finishCard = (id) => {
     setCards((prev) => {
