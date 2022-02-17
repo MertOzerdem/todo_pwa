@@ -13,16 +13,21 @@ const userCards = getItemFromLocal(storageName)
 
 const variants = {
   open: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.5}
+    y: 0,
+    transition: { duration: 1, staggerChildren: 0.1, delayChildren: 0.5},
+    // transitionEnd: {display: 'flex'}
   },
   closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 }
+    y: 50,
+    transition: { when: "beforeChildren", staggerChildren: 0.05, staggerDirection: -1 },
+    // transitionEnd: { display: "none" }
   }
 };
 
 const childrenVariants = {
   open: {
     x: 0,
+    y: 0,
     opacity: 1,
     transition: {
       x: { stiffness: 1000, velocity: -100 }
@@ -30,6 +35,7 @@ const childrenVariants = {
   },
   closed: {
     x: -50,
+    y: -50,
     opacity: 0,
     transition: {
       x: { stiffness: 1000 }
@@ -38,12 +44,10 @@ const childrenVariants = {
 };
 
 function App() {
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(true)
   const [cards, setCards] = useState(userCards ? userCards : [])
 
   useEffect(() => {
-    setOpen(true);
-
     return () => {
       setOpen(false);
     }
@@ -88,6 +92,11 @@ function App() {
       let lastItem = _.maxBy(tempCards, (card) => card.id)
 
       if(tempCards.length) {
+        // tempCards.splice(2, 0, {
+        //   id: lastItem.id  + 1,
+        //   text: '',
+        //   isFinished: false
+        // })
         tempCards.push({
           id: lastItem.id  + 1,
           text: '',
@@ -128,6 +137,7 @@ function App() {
         className="App"
         variants={variants}
         initial="closed"
+        // initial={false} // set to false to omit first render animations.
         animate={isOpen ? "open" : "closed"}
         >
         <Reorder.Group axis="y" values={cards} onReorder={setCards}>

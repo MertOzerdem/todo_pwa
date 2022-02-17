@@ -39,11 +39,12 @@ const Card = (props) => {
         <Reorder.Item
             {...rest}
             layout
+            drag
             className={`${className ? className : ''} ${styles.card}`}
             whileDrag={{ scale: 1.1, transition: { duration: 0.3 }}}
             variants={variants}
             exit={{opacity:0}}
-            transition={{duration:0.5}}
+            transition={{duration:0.2}}
             style={{zIndex: 10}}
             >
             <svg className={styles.confirmBox} onClick={handleClick} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,6 +55,7 @@ const Card = (props) => {
             <div className={styles.cardContext}>
                 {children}
             </div>
+            <button onClick={() => console.log('sad')}></button>
         </Reorder.Item>
     )
 }

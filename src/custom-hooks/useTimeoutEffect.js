@@ -10,7 +10,6 @@ const useTimeoutEffect = (callback, timeout = 1000) => {
             isInitialMount.current = false;
         } else {
             saveChangesTimer = setTimeout(() => {
-                // console.log('save changes alt')
                 callback()
             }, timeout);
         }
