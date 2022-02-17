@@ -43,7 +43,9 @@ const Card = (props) => {
             className={`${className ? className : ''} ${styles.card}`}
             whileDrag={{ scale: 1.1, transition: { duration: 0.3 }}}
             variants={variants}
-            exit={{opacity:0}}
+            exit={{opacity:0, style:{
+                display: 'none'
+            }}}
             transition={{duration:0.2}}
             style={{zIndex: 10}}
             >

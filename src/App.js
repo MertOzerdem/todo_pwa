@@ -15,12 +15,10 @@ const variants = {
   open: {
     y: 0,
     transition: { duration: 1, staggerChildren: 0.1, delayChildren: 0.5},
-    // transitionEnd: {display: 'flex'}
   },
   closed: {
     y: 50,
     transition: { when: "beforeChildren", staggerChildren: 0.05, staggerDirection: -1 },
-    // transitionEnd: { display: "none" }
   }
 };
 
@@ -31,7 +29,8 @@ const childrenVariants = {
     opacity: 1,
     transition: {
       x: { stiffness: 1000, velocity: -100 }
-    }
+    },
+    display: 'flex'
   },
   closed: {
     x: -50,
@@ -39,7 +38,8 @@ const childrenVariants = {
     opacity: 0,
     transition: {
       x: { stiffness: 1000 }
-    }
+    },
+    transitionEnd: { display: "none" }
   }
 };
 
